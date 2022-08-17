@@ -38,18 +38,21 @@
   <ItemGroup>
      <Compile Include="Assets\Playercollision.cs" />
      <Compile Include="Assets\CameraController.cs" />
+     <Compile Include="Assets\EngineSoundStart.cs" />
+     <Compile Include="Assets\EngineSoundEnd.cs" />
+     <Compile Include="Assets\bananCol.cs" />
      <Compile Include="Assets\BillboardController.cs" />
+     <Compile Include="Assets\updateHud.cs" />
      <Compile Include="Assets\LapController.cs" />
      <Compile Include="Assets\BoostController.cs" />
      <Compile Include="Assets\PlayerPowerUps.cs" />
-     <Compile Include="Assets\PlayerMovement.cs" />
-     <Compile Include="Assets\BoxController.cs" />
      <Compile Include="Assets\CheckController.cs" />
-     <Compile Include="Assets\EngineSoundStart.cs" />
-     <Compile Include="Assets\EngineSoundEnd.cs" />
+     <Compile Include="Assets\BoxController.cs" />
+     <Compile Include="Assets\PlayerMovement.cs" />
      <Compile Include="Assets\balloon.cs" />
-     <Compile Include="Assets\bananCol.cs" />
-     <Compile Include="Assets\updateHud.cs" />
+     <Compile Include="Assets\CheckController2.cs" />
+     <Compile Include="Assets\MainMenu.cs" />
+     <Compile Include="Assets\CameraFollow.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />

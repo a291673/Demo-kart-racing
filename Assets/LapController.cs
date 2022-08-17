@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class LapController : MonoBehaviour
 {
-    public int lapsNo = 0;
+    public bool check1 = false;
+    public bool check2 = false;
 
     // Start is called before the first frame update
     private void OnTriggerEnter(Collider other)
@@ -14,17 +15,25 @@ public class LapController : MonoBehaviour
         {
             PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
             if(player != null)
-            {
-                    if(lapsNo >2)
-                    {
-                        Debug.Log("win");
-                    }
+            {   
+                if(check1 && check2)
+                {
+                    player.lapGain();
+                    check1 = false;
+                    check2 = false;
+                }
             }
         }
     }
 
-    public void addLaps()
+    public void addLaps1()
     {
-        lapsNo++;
+        check1 = true;
+        Debug.Log("check1");
+    }
+    public void addLaps2()
+    {
+        check2 = true;
+        Debug.Log("check2");
     }
 }

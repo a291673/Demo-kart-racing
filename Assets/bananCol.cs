@@ -1,16 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class bananCol : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
+
+    private void Awake() {
+        //textBan.text = "Some new line of text.";
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag=="Player")
         {
-            updateHud hud = gameObject.Find("Canvas").GetComponent<updateHud>();
-            hud.bananaGain();
+            PlayerMovement player = other.gameObject.GetComponent<PlayerMovement>();
+            player.bananGain();
             Destroy(gameObject);
         }
     }

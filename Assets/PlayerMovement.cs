@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -22,10 +25,22 @@ public class PlayerMovement : MonoBehaviour
     public GameObject engineStart;
     public GameObject engineLoop;
 
+    public TextMeshProUGUI textBan;
+    public TextMeshProUGUI textLap;
+    public TextMeshProUGUI textWinLose;
+
+    public Image boostIMG;
+
+    private int score  = 0;
+    private int lapsNo  = 1;
+
     void Start()
     {
-        
+        boostIMG.enabled = false;
         sphereRB.transform.parent = null;
+        setBananaText();
+        setLapText();
+        setWinLoseText("");
     }
 
     void Update()
@@ -39,26 +54,23 @@ public class PlayerMovement : MonoBehaviour
         {
             Instantiate(engineStart);
         }
-        if(moveInput == 0)
+        if(Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.UpArrow))
         {
-            //GameObject thashLoop = gameObject.Find("engine Sound");
-
-            //thashLoop.kill();
+            DestroyAll("Sound");
         }
         if(Input.GetKeyDown(KeyCode.Space))
         {
             if(speedBoostPowerUp)
             {
+                boostIMG.enabled = false;
                 SpeedBoostOn();
+                speedBoostPowerUp = false;
+
             }
         }
-        if(sphereRB.velocity.magnitude > maxSpeed)
-        {
-            sphereRB.velocity = Vector3.ClampMagnitude(sphereRB.velocity, maxSpeed);
-        }
-        else{
+
             transform.position = sphereRB.transform.position + new Vector3(0,.1f,0);
-        }
+
         
         float newRotation = turnInput * turnSpeed * Time.deltaTime * Input.GetAxisRaw("Vertical");
         if(Input.GetKey(KeyCode.LeftShift))
@@ -69,6 +81,14 @@ public class PlayerMovement : MonoBehaviour
             transform.Rotate(0, newRotation, 0, Space.World);
         }
         
+    }
+    void DestroyAll(string tag)
+    {
+        GameObject[] sounds = GameObject.FindGameObjectsWithTag(tag);
+        for(int i=0; i< sounds.Length; i++)
+        {
+            Destroy(sounds[i]);
+        }
     }
         
     private void FixedUpdate() 
@@ -83,6 +103,28 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void setBananaText()
+    {
+        textBan.text = "X " + score.ToString();
+    }
+
+    void setLapText()
+    {
+        if(lapsNo<3)
+        {
+            Debug.Log(lapsNo);
+            textLap.text = "Lap: " + lapsNo.ToString();
+        }
+        else{
+            setWinLoseText("Win");
+            StartCoroutine(winScreenDownRoutine());
+        }
+    }
+    void setWinLoseText(string s)
+    {
+        textWinLose.text = s;
+    }
+
     void OnCollisionEnter (Collision other) { 
         if(other.gameObject.tag=="Grass") {
             maxSpeed = 5f;
@@ -92,7 +134,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void SpeedBoostOn()
     {
-        Debug.Log("speed boost");
         maxSpeed = 40f;
         fwdSpeed = 40f;
         StartCoroutine(SpeedBoostPowerDownRoutine());
@@ -100,7 +141,19 @@ public class PlayerMovement : MonoBehaviour
 
     public void blueBallon()
     {
+        boostIMG.enabled = true;
         speedBoostPowerUp = true;
+    }
+
+    public void bananGain()
+    {
+        score++;
+        setBananaText();
+    }
+    public void lapGain()
+    {
+        lapsNo++;
+        setLapText();
     }
 
     public IEnumerator SpeedBoostPowerDownRoutine()
@@ -108,5 +161,10 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         maxSpeed = 10f;
         fwdSpeed = 10f;
+    }
+    public IEnumerator winScreenDownRoutine()
+    {
+        yield return new WaitForSeconds(5.0f);
+        SceneManager.LoadScene("start");
     }
 }
